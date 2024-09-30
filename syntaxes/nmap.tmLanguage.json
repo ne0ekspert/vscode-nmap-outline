@@ -1,0 +1,66 @@
+{
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "Nmap Normal Output",
+    "patterns": [
+        {
+            "include": "#comment"
+        },
+        {
+            "include": "#marker"
+        },
+        {
+            "include": "#host_status"
+        },
+        {
+            "include": "#open_port"
+        },
+        {
+            "include": "#hidden_port"
+        }
+    ],
+    "repository": {
+        "comment": {
+            "name":"comment.nmap",
+            "match": "^#.*\n"
+        },
+        "marker": {
+            "patterns": [{
+                "match": "^Nmap scan report for (\\d+\\.\\d+\\.\\d+\\.\\d+)\n",
+                "captures": {
+                    "1" : {"name": "ip.nmap"}
+                }
+            }]
+        },
+        "host_status": {
+            "patterns": [{
+                "match": "^Host is (up|down) \\((\\d+\\.\\d+)s latency\\)\\.",
+                "captures": {
+                    "1": {"name": "hoststate.nmap"},
+                    "2": {"name": "hostlatency.nmap"}
+                }
+            }]
+        },
+        "open_port": {
+            "patterns": [{
+                "match": "^(\\d+)\/(tcp|udp)\\s+(open|closed|filtered)\\s+(\\S+)\n",
+                "captures": {
+                    "1": {"name": "port.nmap"},
+                    "2": {"name": "protocol.nmap"},
+                    "3": {"name": "portstate.nmap"},
+                    "4": {"name": "service.nmap"}
+                }
+            }]
+        },
+        "hidden_port": {
+            "patterns": [{
+                "match": "^Not shown: (\\d+) (closed|filtered) tcp ports \\(\\w+)\n",
+                "captures": 
+                {
+                    "1" : {"name" : "port.nmap" },
+                    "2" : {"name" : "reason.nmap"}
+                }
+            }]
+        }
+    },
+    "scopeName": "source.nmap"
+}

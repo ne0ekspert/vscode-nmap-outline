@@ -1,0 +1,14 @@
+{
+    "comments": {
+        // symbol used for single line comment. Remove this entry if your language does not support line comments
+        // used here to allow quick commenting/uncommenting of lines.
+        "lineComment": "#"
+    },
+    // This works nicely.
+    "folding": {
+        "markers": {
+            "start": "^Nmap scan report for [\\d\\.]+",
+            "end": "^$"
+        }
+    }
+}
