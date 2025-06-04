@@ -29,19 +29,21 @@ class NmapNormalOutputSymbolProvider implements vscode.DocumentSymbolProvider {
                     'Aggressive OS Guess', '',
                     vscode.SymbolKind.Module,
                     line.range, line.range);
-                    
-                    guesses.forEach((guess) => {
-                        const symbol = new vscode.DocumentSymbol(
+
+                guesses.forEach((guess) => {
+                    const symbol = new vscode.DocumentSymbol(
                         guess, 'OS Guess',
                         vscode.SymbolKind.Object,
                         line.range, line.range);
-                        parent_symbol.children.push(symbol);
-                    });
+                    parent_symbol.children.push(symbol);
+                });
 
+                if (chunk.length > 0) {
                     chunk[chunk.length - 1].children.push(parent_symbol);
-                } else if (this.openPortRegex.test(line.text)) {
+                }
+            } else if (this.openPortRegex.test(line.text)) {
                 const match = line.text.match(this.openPortRegex);
-                if (!match) {
+                if (!match || chunk.length === 0) {
                     continue;
                 }
 
@@ -60,9 +62,11 @@ class NmapNormalOutputSymbolProvider implements vscode.DocumentSymbolProvider {
 
                 let symbol = new vscode.DocumentSymbol(
                     String(match[1]), match[4],
-                    symbolkind, 
+                    symbolkind,
                     line.range, line.range);
-                chunk[chunk.length - 1].children.push(symbol);
+                if (chunk.length > 0) {
+                    chunk[chunk.length - 1].children.push(symbol);
+                }
             }
         }
 
