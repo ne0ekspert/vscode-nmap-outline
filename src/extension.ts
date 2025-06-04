@@ -69,21 +69,18 @@ class NmapNormalOutputSymbolProvider implements vscode.DocumentSymbolProvider {
         return chunk;
     }
 
-    public provideDocumentSymbols(
+    public async provideDocumentSymbols(
         document: vscode.TextDocument,
         token: vscode.CancellationToken): Promise<vscode.DocumentSymbol[]> {
-        return new Promise((resolve, reject) => {
-            const symbols: vscode.DocumentSymbol[] = [];
-            const chunkSize = 10; // Adjust this value based on performance needs
+        const symbols: vscode.DocumentSymbol[] = [];
+        const chunkSize = 10; // Adjust this value based on performance needs
 
-            for (let i = 0; i < document.lineCount; i += chunkSize) {
-                this.processChunk(document, i, chunkSize, token).then((chunk) => {
-                    symbols.push(...chunk);
-                });
-            }
+        for (let i = 0; i < document.lineCount; i += chunkSize) {
+            const chunk = await this.processChunk(document, i, chunkSize, token);
+            symbols.push(...chunk);
+        }
 
-            resolve(symbols);
-        });
+        return symbols;
     }
 }
 
