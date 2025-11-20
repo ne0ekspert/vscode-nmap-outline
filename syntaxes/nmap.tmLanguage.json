@@ -53,11 +53,11 @@
         },
         "hidden_port": {
             "patterns": [{
-                "match": "^Not shown: (\\d+) (closed|filtered) tcp ports \\(\\w+)\n",
-                "captures": 
-                {
-                    "1" : {"name" : "port.nmap" },
-                    "2" : {"name" : "reason.nmap"}
+                "match": "^Not shown: (\\d+) (closed|filtered) \\w+ ports \\(([^\\)]+)\\)$",
+                "captures": {
+                    "1": {"name": "port.nmap"},
+                    "2": {"name": "reason.nmap"},
+                    "3": {"name": "state.nmap"}
                 }
             }]
         }
